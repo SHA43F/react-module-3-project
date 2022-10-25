@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Form from "./Components/Form";
+import FormList from "./Components/FormList";
 
 function App() {
+  const [usersList, setContent] = useState([]);
+  const dataValues = (n, a) => {
+    setContent((prevUserList) => {
+      return [...prevUserList, { name: n, age: a, id:Math.random().toString()}];
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Form addUserData={dataValues}></Form>
+      <FormList users={usersList} />
     </div>
   );
 }
