@@ -1,19 +1,3 @@
-// import Button from "./Button";
-// import Modal from "react-modal";
-// Modal.setAppElement("#root");
-
-// const ErrorModal = (props) => {
-//   return (
-//     <Modal isOpen={props.boolean} onRequestClose={props.onClose}>
-//       <h2>{props.title}</h2>
-//       <p>{props.message}</p>
-//       <Button onClick={props.onClose}>Close</Button>
-//     </Modal>
-//   );
-// };
-
-// export default ErrorModal;
-
 import Button from "./Button";
 import Modal from "react-modal";
 import ReactDOM from "react-dom";

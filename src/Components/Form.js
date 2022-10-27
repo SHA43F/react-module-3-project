@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import Button from "./UI/Button";
 import ErrorModal from "./UI/ErrorModal";
 
 const Form = (props) => {
-  const [username, setUsername] = useState("");
-  const [age, setAge] = useState("");
+  const uName = useRef();
+  const uAge = useRef();
+  const uCollege = useRef();
+  // const [username, setUsername] = useState("");
+  // const [age, setAge] = useState("");
   const [error, setError] = useState();
 
-  const usernameValue = (event) => {
-    setUsername(event.target.value);
-  };
+  // const usernameValue = (event) => {
+  //   setUsername(event.target.value);
+  // };
 
-  const ageValue = (event) => {
-    setAge(event.target.value);
-  };
+  // const ageValue = (event) => {
+  //   setAge(event.target.value);
+  // };
 
   const onCloseModal = () => {
     setError();
@@ -22,7 +25,10 @@ const Form = (props) => {
 
   const submitUser = (e) => {
     e.preventDefault();
-    if (username.trim().length === 0 || age.trim().length === 0) {
+    const username = uName.current.value;
+    const age = uAge.current.value;
+    const college = uCollege.current.value;
+    if (username.trim().length === 0 || age.trim().length === 0 || college.trim().length === 0) {
       setError({
         title: "Alert!",
         message: "Please Fill the inputs.",
@@ -39,9 +45,12 @@ const Form = (props) => {
       return;
     }
 
-    props.addUserData(username, age);
-    setUsername("");
-    setAge("");
+    props.addUserData(username, age, college);
+    // setUserName('');
+    // setAge('');
+    uName.current.value = '';
+    uAge.current.value = '';
+    uCollege.current.value = '';
   };
 
   return (
@@ -61,13 +70,30 @@ const Form = (props) => {
           <input
             id="username"
             type="text"
-            value={username}
-            onChange={usernameValue}
+            // value={username}
+            // onChange={usernameValue}
+            ref={uName}
           ></input>
         </div>
         <div>
-          <label htmlFor="age">Age(Years)</label>
-          <input id="age" type="number" value={age} onChange={ageValue}></input>
+          <label htmlFor="age">Age (Years)</label>
+          <input
+            id="age"
+            type="number"
+            // value={age}
+            // onChange={ageValue}
+            ref={uAge}
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="college">College</label>
+          <input
+            id="college"
+            type="text"
+            // value={college}
+            // onChange={collegeValue}
+            ref={uCollege}
+          ></input>
         </div>
         <Button type="submit">Add User</Button>
       </form>
