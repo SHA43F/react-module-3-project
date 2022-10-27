@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import Modal from "react-modal";
-Modal.setAppElement("#root");
+
+import Button from "./UI/Button";
+import ErrorModal from "./UI/ErrorModal";
 
 const Form = (props) => {
   const [username, setUsername] = useState("");
   const [age, setAge] = useState("");
-  const [isNull, setisNull] = useState(false);
-  const [isLess, setisLess] = useState(false);
+  const [error, setError] = useState();
+
   const usernameValue = (event) => {
     setUsername(event.target.value);
   };
@@ -15,62 +16,62 @@ const Form = (props) => {
     setAge(event.target.value);
   };
 
-  const closeNull = () => {
-    setisNull(!isNull);
-  };
-  const closeLess = () => {
-    setisLess(!isLess);
+  const onCloseModal = () => {
+    setError();
   };
 
   const submitUser = (e) => {
     e.preventDefault();
-    if (username.length === 0 || age.length === 0) {
-      setisNull(!isNull);
+    if (username.trim().length === 0 || age.trim().length === 0) {
+      setError({
+        title: "Alert!",
+        message: "Please Fill the inputs.",
+        boolean: true,
+      });
       return;
     }
-    if (age < 1) {
-      setisLess(!isLess);
+    if (+age < 1) {
+      setError({
+        title: "Alert!",
+        message: "Please Enter Valid Age.",
+        boolean: true,
+      });
       return;
     }
-    // const submitUserData ={
-    //     id:Math.random().toString(),
-    //     nameVal: username,
-    //     ageVal: age
-    // }
+
     props.addUserData(username, age);
     setUsername("");
     setAge("");
   };
+
   return (
-    <form onSubmit={submitUser}>
-      <div>
-        <label>Username</label>
-        <input type="text" value={username} onChange={usernameValue}></input>
-      </div>
-      <div>
-        <label>Age(Years)</label>
-        <input type="number" value={age} onChange={ageValue}></input>
-      </div>
-      <button type="submit">Add User</button>
-      <Modal
-        isOpen={isNull}
-        onRequestClose={closeNull}
-        contentLabel="isNullDialog"
-      >
-        <h2>Alert!</h2>
-        <p>Please fill the empty blanks.</p>
-        <button onClick={closeNull}>Close</button>
-      </Modal>
-      <Modal
-        isOpen={isLess}
-        onRequestClose={closeLess}
-        contentLabel="isLessDialog"
-      >
-        <h2>Alert!</h2>
-        <p>Please Enter Valid Age.</p>
-        <button onClick={closeLess}>Close</button>
-      </Modal>
-    </form>
+    <React.Fragment>
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          boolean={error.boolean}
+          onClose={onCloseModal}
+        />
+      )}
+      <div></div>
+      <form onSubmit={submitUser}>
+        <div>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            value={username}
+            onChange={usernameValue}
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="age">Age(Years)</label>
+          <input id="age" type="number" value={age} onChange={ageValue}></input>
+        </div>
+        <Button type="submit">Add User</Button>
+      </form>
+    </React.Fragment>
   );
 };
 
